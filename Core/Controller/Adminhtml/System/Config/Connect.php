@@ -91,6 +91,10 @@ class Connect extends Action
     public function execute()
     {
         $request = $this->getRequest()->getParams();
+
+        // Set store to default if Single store mode
+        $request['store'] = $request['store'] ?? $this->storeManager->getDefaultStoreView()->getId();
+
         $return = [];
 
         if ($request['status'] && !empty($request['api_url']) && !empty($request['api_key'])) {
@@ -192,7 +196,7 @@ class Connect extends Action
 
         return [
             "connection" => [
-                "service" => $store->getName(),
+                "service" => "magento2",
                 "externalid" => $store->getCode(),
                 "name" => $store->getName(),
                 "logoUrl" => $this->activeCampaignHelper->getStoreLogo($storeId),
